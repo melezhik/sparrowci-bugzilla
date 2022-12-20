@@ -1,0 +1,20 @@
+secrets:
+  - BUGZILLA_RESTAPI_KEY
+  
+tasks:
+  - main:
+      default: true
+      language: Bash
+      code: |
+        set -e
+
+        cat << HERE > data.json
+        {
+          "comment" : "This comment is made by SparrowCI",
+          "is_private" : false
+        }      
+        HERE
+
+        curl -f -H "Content-Type: application/json" -X POST \
+        --data @data.json \
+        https://bugzilla-dev.allizom.org/rest/bug/1632727/comment?api_key=$BUGZILLA_RESTAPI_KEY
