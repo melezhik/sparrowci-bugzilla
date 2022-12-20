@@ -2,7 +2,8 @@ secrets:
   - BUGZILLA_RESTAPI_KEY
   
 tasks:
-  - main:
+  - 
+    main:
       default: true
       language: Bash
       code: |
