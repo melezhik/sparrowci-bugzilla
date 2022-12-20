@@ -18,3 +18,5 @@ tasks:
         curl -f -H "Content-Type: application/json" -X POST \
         --data @data.json \
         https://bugzilla-dev.allizom.org/rest/bug/1632727/comment?api_key=$BUGZILLA_RESTAPI_KEY
+        
+        echo "comment has been added to https://bugzilla-dev.allizom.org/show_bug.cgi?id=1632727"
