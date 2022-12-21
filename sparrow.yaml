@@ -44,9 +44,7 @@ tasks:
           }          
           HERE
 
-          cat data.json
-          
-          curl -D - -H "Content-Type: application/json" -X PUT \
+          curl -f -H "Content-Type: application/json" -X PUT \
           --data @data.json \
           https://bugzilla-dev.allizom.org/rest/bug/$bugid?api_key=$BUGZILLA_RESTAPI_KEY
 
