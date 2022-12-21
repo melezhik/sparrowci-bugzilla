@@ -5,19 +5,56 @@ tasks:
   - 
     name: main
     default: true
-    language: Bash
-    code: |
-      set -e
+    language: Raku
+    config:
+      bugid: 1632727
+    init: |
+      run_task "comment";
+      run_task "close" if config()<tasks><git-commit><state><comment> ~~ /'close!'/;
+    subtasks:
+      - 
+        name: comment
+        language: Bash
+        code: |
+          set -e
+          bugid=$(config bugid)
+          cat << HERE > data.json
+          {
+            "comment" : "This comment is made by SparrowCI",
+            "is_private" : false
+          }      
+          HERE
 
-      cat << HERE > data.json
-      {
-        "comment" : "This comment is made by SparrowCI",
-        "is_private" : false
-      }      
-      HERE
+          curl -f -H "Content-Type: application/json" -X POST \
+          --data @data.json \
+          https://bugzilla-dev.allizom.org/rest/bug/$bugid/comment?api_key=$BUGZILLA_RESTAPI_KEY
 
-      curl -f -H "Content-Type: application/json" -X POST \
-      --data @data.json \
-      https://bugzilla-dev.allizom.org/rest/bug/1632727/comment?api_key=$BUGZILLA_RESTAPI_KEY
+          echo "comment has been added to https://bugzilla-dev.allizom.org/show_bug.cgi?id=$bugid"
+      - 
+        name: close
+        language: Bash
+        code: |
+          set -e
+          bugid=$(config bugid)
+          cat << "HERE" > data.json
+          {
+            "ids" : [$bugid],
+            "status" : "CLOSED",
+            "resolution" : "it's all right now!"
+          }          
+          HERE
 
-      echo "comment has been added to https://bugzilla-dev.allizom.org/show_bug.cgi?id=1632727"
+          curl -f -H "Content-Type: application/json" -X PUT \
+          --data @data.json \
+          https://bugzilla-dev.allizom.org/rest/bug/$bugid/api_key=$BUGZILLA_RESTAPI_KEY
+
+          echo "bug has been closed https://bugzilla-dev.allizom.org/show_bug.cgi?id=$bugid"
+
+
+    depends:
+      -
+        name: git-commit
+  - name: git-commit
+    plugin: git-commit-data
+    config:
+      dir: source
