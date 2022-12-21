@@ -25,11 +25,11 @@ tasks:
           }      
           HERE
 
-          curl -f -H "Content-Type: application/json" -X POST \
+          curl -fs -H "Content-Type: application/json" -X POST \
           --data @data.json \
           https://bugzilla-dev.allizom.org/rest/bug/$bugid/comment?api_key=$BUGZILLA_RESTAPI_KEY
 
-          echo "comment has been added to https://bugzilla-dev.allizom.org/show_bug.cgi?id=$bugid"
+          echo -e "\ncomment has been added to https://bugzilla-dev.allizom.org/show_bug.cgi?id=$bugid"
       - 
         name: close
         language: Bash
@@ -44,11 +44,11 @@ tasks:
           }          
           HERE
 
-          curl -f -H "Content-Type: application/json" -X PUT \
+          curl -fs -H "Content-Type: application/json" -X PUT \
           --data @data.json \
           https://bugzilla-dev.allizom.org/rest/bug/$bugid?api_key=$BUGZILLA_RESTAPI_KEY
 
-          echo "bug has been closed https://bugzilla-dev.allizom.org/show_bug.cgi?id=$bugid"
+          echo -e "\nbug has been closed https://bugzilla-dev.allizom.org/show_bug.cgi?id=$bugid"
 
 
     depends:
