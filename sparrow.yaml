@@ -39,8 +39,7 @@ tasks:
           cat << "HERE" > data.json
           {
             "ids" : [$bugid],
-            "status" : "CLOSED",
-            "resolution" : "it's all right now!"
+            "status" : "RESOLVED"
           }          
           HERE
 
