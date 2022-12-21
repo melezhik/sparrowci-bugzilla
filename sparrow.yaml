@@ -36,7 +36,7 @@ tasks:
         code: |
           set -e
           bugid=$(config bugid)
-          cat << "HERE" > data.json
+          cat << HERE > data.json
           {
             "ids" : [$bugid],
             "status" : "RESOLVED",
